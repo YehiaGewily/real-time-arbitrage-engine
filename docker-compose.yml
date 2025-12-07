@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-server:7.4.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  jobmanager:
+    build: .
+    image: custom-flink-python:1.18.1
+    container_name: jobmanager
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+    volumes:
+      - ./jars:/opt/flink/lib/usrlib
+      - ./src:/opt/src
+
+  taskmanager:
+    image: custom-flink-python:1.18.1
+    container_name: taskmanager
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+    volumes:
+      - ./jars:/opt/flink/lib/usrlib
+      - ./src:/opt/src
+
+  producer:
+    image: custom-flink-python:1.18.1
+    container_name: producer
+    depends_on:
+      - kafka
+    volumes:
+      - ./src:/opt/src
+    command: python /opt/src/producer.py
+    restart: on-failure
+
+  job-submitter:
+    image: custom-flink-python:1.18.1
+    container_name: job-submitter
+    depends_on:
+      - jobmanager
+      - kafka
+    volumes:
+      - ./src:/opt/src
+      - ./jars:/opt/flink/lib/usrlib
+    # Wait for JobManager output or just sleep briefly, then submit
+    # Note: --jarfile is used to pass the connector jar to the cluster for the job
+    command: >
+      /bin/bash -c "
+        echo 'Waiting for JobManager...' &&
+        sleep 10 &&
+        ./bin/flink run \
+          -py /opt/src/processor.py \
+          --jarfile /opt/flink/lib/usrlib/flink-sql-connector-kafka-3.0.1-1.18.jar
+      "
