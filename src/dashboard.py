@@ -96,4 +96,4 @@ for message in consumer:
             
             # Show last 20 of the filtered list
             display_df = filtered_df.tail(20)[['symbol', 'spread_diff', 'ts', 'coinbase_price', 'binance_price']]
-            st.dataframe(display_df, use_container_width=True)
+            st.dataframe(display_df, width='stretch')
