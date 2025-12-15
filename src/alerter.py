@@ -6,7 +6,8 @@ from kafka import KafkaConsumer
 KAFKA_TOPIC = "arbitrage-alerts"
 # Note: Using list format for bootstrap_servers is robust, but string works too if single broker
 BOOTSTRAP_SERVERS = ["kafka:29092"] 
-WEBHOOK_URL = "https://discord.com/api/webhooks/1448777080371286108/DqOjef7HmhxTIzw-KabhI2FVJAOFlBDrySfbczrQbNkLVOMyzK_mpQzLhB7IwBoSCnEH" # <--- REPLACE THIS WITH YOUR ACTUAL DISCORD WEBHOOK URL
+WEBHOOK_URL = "https://discord.com/api/webhooks/1449852580959227935/fASNYf9Jcxh5teJpYhEPiI38Mq3V_PszMQwzbT0j8ZYmw6vJ-xHeNdmMlGPVl7p1QIrE" # <--- REPLACE THIS WITH YOUR ACTUAL DISCORD WEBHOOK URL
+FEE_RATE = 0.001 # 0.1% per trade (Binance Taker / Institutional Tier)
 
 def main():
     print("Starting Alerter Service...")
@@ -37,17 +38,25 @@ def main():
         binance_price = data.get("binance_price", 0.0)
         
         # Threshold Logic
-        if spread_diff > 20:
+        if spread_diff > 20: # Keep generic threshold for visibility
             # Determine direction (Cheaper one is the Buy)
             if coinbase_price > binance_price:
                 direction = "Buy: Binance / Sell: Coinbase"
             else:
                 direction = "Buy: Coinbase / Sell: Binance"
                 
+            # Calculate Implications (assuming 1 unit)
+            # Total Cost involved = Price 1 + Price 2
+            total_trade_volume = coinbase_price + binance_price
+            est_fees = total_trade_volume * FEE_RATE
+            net_profit = spread_diff - est_fees
+                
             msg_content = (
-                f"🚨 Arbitrage Found! \n"
+                f"🚨 **Arbitrage Found!** \n"
                 f"Symbol: {symbol} \n"
-                f"Profit: ${spread_diff:.2f} \n"
+                f"G. Spread: ${spread_diff:.2f} \n"
+                f"Est. Fees (0.1%): -${est_fees:.2f} \n"
+                f"**Net Profit:** ${net_profit:.2f} \n"
                 f"{direction}"
             )
             
