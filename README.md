@@ -36,7 +36,7 @@ graph LR
 - Streamlit application.
 - Consumes `arbitrage-alerts` to visualize price spreads and alert history in real-time.
 
-## 📸 Screenshots
+### Screenshots
 ### Live Dashboard
 Real-Time Alerts Real-time visualization of price spreads Instant notifications sent to Discord
 ![alt text](image.png)
@@ -64,7 +64,7 @@ Clone the repository and ensure your workspace looks like this:
     └── dashboard.py
 ```
 
-### 📥 Download Required JAR:
+###  Download Required JAR:
 You must download the Flink-Kafka connector and place it in the `jars/` folder:
 Download flink-sql-connector-kafka-3.0.1-1.18.jar
 
@@ -112,7 +112,7 @@ Restart the services: `docker-compose up -d`
 | `docker-compose.yml` | Orchestrates Zookeeper, Kafka, JobManager, TaskManager, and App services. |
 | `Dockerfile` | Custom image definition for Python dependencies. |
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 - **"Leader Not Available" in Kafka Logs:**
   This is common during startup. The services are designed to retry and should recover automatically after 30-60 seconds.
 - **Dashboard shows "Waiting for Kafka":**
@@ -120,7 +120,7 @@ Restart the services: `docker-compose up -d`
 - **No Alerts:**
   Real arbitrage is rare! Enable `DEMO_MODE` to verify the pipeline is working.
 
-## 🚀 Future Roadmap & Path to Profitability
+## Future Roadmap & Path to Profitability
 To turn this project from a detector into a profitable trading engine, the following upgrades are needed:
 
 1. **Fee Reduction (Critical)**
@@ -138,3 +138,4 @@ To turn this project from a detector into a profitable trading engine, the follo
 4. **DeFi & Flash Loans**
    - Move beyond Centralized Exchanges (CEX).
    - Use **Flash Loans** (Aave/Uniswap) to borrow capital instantly, execute the trade on DEXs, and repay the loan in the same transaction blocks, removing capital requirements.
+
