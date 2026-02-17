@@ -88,7 +88,7 @@ docker-compose up --build -d
 docker-compose logs -f taskmanager
 ```
 
-## ⚙️ Configuration & Demo Mode
+##  Configuration & Demo Mode
 ### Demo Mode
 Real arbitrage opportunities are rare. To force alerts for testing purposes, you can enable `DEMO_MODE`. This lowers the detection threshold to $0.1.
 
@@ -138,4 +138,5 @@ To turn this project from a detector into a profitable trading engine, the follo
 4. **DeFi & Flash Loans**
    - Move beyond Centralized Exchanges (CEX).
    - Use **Flash Loans** (Aave/Uniswap) to borrow capital instantly, execute the trade on DEXs, and repay the loan in the same transaction blocks, removing capital requirements.
+
 
