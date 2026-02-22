@@ -121,7 +121,7 @@ Restart the services: `docker-compose up -d`
   Real arbitrage is rare! Enable `DEMO_MODE` to verify the pipeline is working.
 
 ## Future Roadmap & Path to Profitability
-To turn this project from a detector into a profitable trading engine, the following upgrades are needed:
+To turn this project from a detector into a profitable trading engine, the following upgrades are needed:  
 
 1. **Fee Reduction (Critical)**
    - **Problem:** Retail trading fees (0.1% - 0.6%) often exceed the arbitrage spread (e.g., $20 spread vs $200 fees).
@@ -138,5 +138,6 @@ To turn this project from a detector into a profitable trading engine, the follo
 4. **DeFi & Flash Loans**
    - Move beyond Centralized Exchanges (CEX).
    - Use **Flash Loans** (Aave/Uniswap) to borrow capital instantly, execute the trade on DEXs, and repay the loan in the same transaction blocks, removing capital requirements.
+
 
 
