@@ -37,7 +37,7 @@ graph LR
 - Consumes `arbitrage-alerts` to visualize price spreads and alert history in real-time.
 
 ### Screenshots
-### Live Dashboard
+### Live Dashboard 
 Real-Time Alerts Real-time visualization of price spreads Instant notifications sent to Discord
 ![alt text](image.png)
 ![alt text](image-1.png)
@@ -138,6 +138,7 @@ To turn this project from a detector into a profitable trading engine, the follo
 4. **DeFi & Flash Loans**
    - Move beyond Centralized Exchanges (CEX).
    - Use **Flash Loans** (Aave/Uniswap) to borrow capital instantly, execute the trade on DEXs, and repay the loan in the same transaction blocks, removing capital requirements.
+
 
 
 
