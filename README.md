@@ -1,5 +1,5 @@
 #  Real-Time Crypto Arbitrage Detector
-A robust, real-time data engineering pipeline that detects Bitcoin (BTC) price discrepancies between Coinbase and Binance using Apache Flink and Kafka. The system processes market data in real-time, identifies arbitrage opportunities, and alerts users via Discord and a live Streamlit dashboard.
+A robust, real-time data engineering pipeline that detects Bitcoin (BTC) price discrepancies between Coinbase and Binance using Apache Flink and Kafka. The system processes market data in real-time, identifies arbitrage opportunities, and alerts users via Discord and a live Streamlit dashboard.  
 
 ## Architecture
 The pipeline consists of four main microservices orchestrated via Docker Compose:
